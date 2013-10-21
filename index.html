@@ -9,10 +9,14 @@
 </head>
 <body>
 <h1>Logiform</h1>
+<p>Logiform creates a MongoDB-like query string from a sequence of complex conditions, vice versa.</p> 
+<p>Still in very early stage of development, and <a href="https://github.com/lqez/logiform">I'm living in GitHub</a></p>
 <textarea name="filter" id="filter" class="logiform" rows="8" cols="80"></textarea>
+<p>by <a href="https://twitter.com/lqez/">Park Hyunwoo</a></p>
 <script>
 $(".logiform").logiform({
     'hide_original': false,
+    'data': '{"$or":[{"$and":[{"devicetype":{"$eq":"iPad"}},{"language":{"$eq":"ko"}}]},{"$and":[{"devicetype":{"$eq":"iPhone"}},{"version":{"$gt":"3.0"}}]},{"country":{"$eq":"jp"}}]}',
     'schema': [
         {
             'id': 'devicetype', 

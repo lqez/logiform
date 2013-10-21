@@ -169,7 +169,7 @@
 
             // Parse data if exists
             if (logiform.settings.data) {
-                logiform.parse(JSON.parse(logiform.settings.data), root);
+                logiform.parse(logiform.settings.data, root);
             }
 
             // Hide source
@@ -181,8 +181,16 @@
             $element.after(root);
 
         }
+        
+        logiform.parse = function(data, root) {
+            root.find('.lf-condition-list').empty();
+            logiform._traverse_parse(JSON.parse(data), root);
 
-        logiform.parse = function(tree, node) {
+            // Bake it!
+            logiform.bake(root);
+        }
+
+        logiform._traverse_parse = function(tree, node) {
             // Traversing condition tree
             for (var logicalOperator in tree) {
 
@@ -202,7 +210,7 @@
 
                     for (var field in condition) {
 
-                        // Check whether field name is in scheme,
+                        // Check whether field name is in schema,
                         for (var s = 0, szs = logiform.settings.schema.length; s < szs; s++) {
                             item = logiform.settings.schema[s];
 
@@ -234,7 +242,7 @@
                                 var condition_group_node = $(condition_group_mockup);
 
                                 // Initiate condition group
-                                logiform.parse(condition, condition_group_node);
+                                logiform._traverse_parse(condition, condition_group_node);
 
                                 conditions.append(condition_group_node);
                             }
@@ -247,9 +255,6 @@
                 break;
             }
 
-        }
-
-        logiform._traverse_parse = function(node) {
         }
 
         logiform.bake = function(node) {
