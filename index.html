@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> 
+<script src="logiform.js"></script> 
+<link rel="stylesheet" href="logiform.css">
+<style>
+</style>
+</head>
+<body>
+<h1>Logiform</h1>
+<textarea name="filter" id="filter" class="logiform" rows="8" cols="80"></textarea>
+<script>
+$(".logiform").logiform({
+    'hide_original': false,
+    'schema': [
+        {
+            'id': 'devicetype', 
+            'description': 'Device Type',
+            'type': 'array',
+            'candidates': [
+                'iPad',
+                'iPhone'
+            ]
+        },
+        {
+            'id': 'version',
+            'description': 'Application Version',
+            'type': 'string'
+        },
+        {
+            'id': 'language',
+            'description': 'Language',
+            'type': 'array',
+            'candidates': [
+                ['ko', 'Korean'],
+                ['en', 'English'],
+                ['ja', 'Japanese']
+            ]
+        },
+        {
+            'id': 'country',
+            'description': 'Country',
+            'type': 'array',
+            'candidates': [
+                ['kr', 'Korea'],
+                ['us', 'United States'],
+                ['jp', 'Japan']
+            ]
+        }
+    ]
+});
+//$('.selectpicker').selectpicker();
+</script>
+</body>
+</html>

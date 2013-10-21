@@ -1,0 +1,9 @@
+.lf-condition-group {
+    border: 1px solid black;
+    padding: 8px;
+    margin: 4px;
+}
+
+.lf-condition-value {
+    display: inline-block;
+}
