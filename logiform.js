@@ -75,8 +75,8 @@
             var fieldValueMockup = {};
             var firstFieldValueMockup = '';
             var fieldItems = '';
-            for (var i = 0, sz = logiform.settings.schema.length; i < sz; i++) {
-                item = logiform.settings.schema[i];
+            for (var idxSchema = 0, szSchema = logiform.settings.schema.length; idxSchema < szSchema; idxSchema++) {
+                var item = logiform.settings.schema[idxSchema];
 
                 if (item.id == '|') {
                     fieldItems += divider
@@ -84,7 +84,20 @@
                     fieldItems += '<option value="'+item['id']+'">'+item['description']+'</option>';
 
                     // TODO: Create a suitable mockup for each field type
-                    fieldValueMockup[item['id']] = 'mockup for '+item['id']+'<input class="lf-value" type="text">';
+                    if (item['type'] == 'array') {
+                        var candidates = '';
+                        for (var idxOption = 0, szOption = item['candidates'].length; idxOption < szOption; idxOption++) {
+                            var option = item['candidates'][idxOption];
+                            if (option instanceof Array) {
+                                candidates += '<option value="'+option[0]+'">'+option[1]+'</option>';
+                            } else {
+                                candidates += '<option value="'+option+'">'+option+'</option>';
+                            }
+                        }
+                        fieldValueMockup[item['id']] = '<select class="lf-value">'+candidates+'</select>';
+                    } else {
+                        fieldValueMockup[item['id']] = '<input class="lf-value" type="text">';
+                    }
 
                     if (firstFieldValueMockup == '') {
                         firstFieldValueMockup = fieldValueMockup[item['id']];
@@ -150,7 +163,11 @@
                 group.remove();
                 logiform.update();
             });
-            root.on('change', '.lf-field, .lf-comparisonoperator, .lf-logicaloperator, .lf-condition-value', function() {
+            root.on('change', '.lf-field', function() {
+                $(this).siblings('.lf-condition-value').html(fieldValueMockup[$(this).val()]);
+                logiform.update();
+            });
+            root.on('change', '.lf-comparisonoperator, .lf-logicaloperator, .lf-value', function() {
                 logiform.update();
             });
         }
