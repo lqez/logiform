@@ -7,13 +7,12 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> 
 
     <!-- Bootstrap 3 -->
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.css">
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
-    <!-- codemirror -->
-    <script src="lib/codemirror/codemirror.js"></script> 
-    <link rel="stylesheet" href="lib/codemirror/codemirror.css">
+    <!-- bootstrap-select -->
+    <script src="lib/bootstrap-select/bootstrap-select.js"></script> 
+    <link rel="stylesheet" href="lib/bootstrap-select/bootstrap-select.css">
 
     <!-- google fonts -->
     <link href='http://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
@@ -34,6 +33,42 @@
     p {
         font-family: 'Arvo', serif;
     }
+    textarea {
+        font-family: monospace;
+        border: 0;
+
+        width: 100%;
+        height: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 8px 14px;
+    }
+
+    .lf-condition-group {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 8px 14px;
+        margin: 0px;
+        background-color: rgba(128,128,32,0.08);
+    }
+
+    .lf-condition-group .lf-condition-group {
+        margin: 0px 0px 10px 0 ;
+    }
+
+    .lf-condition-value {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .col-md-8, .col-md-4 {
+        padding-top: 10px;
+    }
     </style>
 </head>
 
@@ -49,11 +84,23 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
+            <div class="form-group">
+                <button id="btn-bake" type="button" class="btn btn-sm btn-info">Bake into string</button>
+                <label>
+                    <input id="btn-liveupdate" type="checkbox" checked> Live update
+                </label>
+            </div>
             <div id="logiform-target"></div>
         </div>
-        <div class="col-md-6">
-            <textarea name="filter" id="filter" class="logiform" rows="8" cols="80"></textarea>
+        <div class="col-md-4">
+            <div class="form-group">
+                <button id="btn-parse" type="button" class="btn btn-sm btn-info">Parse</button>
+                <label>
+                    <input id="btn-prettify" type="checkbox" checked> Prettify
+                </label>
+            </div>
+            <textarea name="filter" id="logiform-source" class="logiform" rows="26"></textarea>
         </div>
     </div>
     <hr>
@@ -66,10 +113,15 @@
 </div>
 <script>
 $(document).ready(function() {
-    $('.logiform').logiform({
-        'hide_original': false,
+    // Initialize logiform 
+    var logiform = $('#logiform-source').logiform({
+        'hideOriginal': false,
         'target': $('#logiform-target'),
-        'pretty': true,
+        'prettify': true,
+        'liveUpdate': true,
+        'onUpdate': function() {
+            $('.selectpicker').selectpicker('refresh');
+        },
         'data': '{"$or":[{"$and":[{"devicetype":{"$eq":"iPad"}},{"language":{"$eq":"ko"}}]},{"$and":[{"devicetype":{"$eq":"iPhone"}},{"version":{"$gt":"3.0"}}]},{"country":{"$eq":"jp"}}]}',
         'schema': [
             {
@@ -108,12 +160,22 @@ $(document).ready(function() {
             }
         ]
     });
-    
-    // Initialize Codemirror
-    var editor = CodeMirror.fromTextArea(document.getElementById("filter"), {
-        lineNumbers: true,
-        mode: "javascript",
-        link: true
+
+    // Initialize bootstrap-select
+    $('.selectpicker').selectpicker();
+
+
+    // Initialize buttons
+    $('#btn-bake').click( function() {
+    });
+    $('#btn-liveupdate').click( function() {
+    });
+    $('#btn-parse').click( function() {
+    });
+    $('#btn-prettify').click( function() {
+        logiform.data("logiform").settings.liveUpdate = this.checked;
+        console.log(logiform.data("logiform").settings.liveUpdate);
+        logiform.data("logiform").bake();
     });
 });
 </script>
