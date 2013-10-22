@@ -203,7 +203,7 @@
             }
 
             // Hide source
-            if (logiform.settings.hide_original) {
+            if (logiform.settings.hideOriginal) {
                 $element.hide();
             }
 
@@ -291,8 +291,8 @@
         }
 
         logiform.update = function(node) {
-            if (logiform.settings.on_update) {
-                logiform.settings.on_update();
+            if (logiform.settings.onUpdate) {
+                logiform.settings.onUpdate();
             }
 
             if (logiform.settings.liveUpdate) {
