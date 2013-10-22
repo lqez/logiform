@@ -19,7 +19,7 @@ There is no bower configuration, yet. Please clone me from here.
 How to use
 ----------
 
-Download logiform and add below codes into the <head> section of your HTML page.
+Download logiform and add below codes into the `<head>` section of your HTML page.
 
     <script src="logiform.js"></script> 
     <link rel="stylesheet" href="logiform.css">
@@ -71,20 +71,20 @@ Customizing logiform via plugin settings, like below.
 
  - `width`
     - Set width of each item.
-    - `width.logicalOperator` : `80px`
-    - `width.field` : `200px`
-    - `width.comparisonOperator` : `100px`
-    - `width.value` : `200px`
+    - `width.logicalOperator` : '80px'
+    - `width.field` : '200px'
+    - `width.comparisonOperator` : '100px'
+    - `width.value` : '200px'
 
  - `text`
     - Set title of each item.
-    - `add-condition` : `+ Condition`
-    - `add-condition-group` : `+ Group`,
-    - `remove-condition` : `-`,
-    - `remove-condition-group` : `Remove`
+    - `add-condition` : '+ Condition'
+    - `add-condition-group` : '+ Group'
+    - `remove-condition` : '-'
+    - `remove-condition-group` : 'Remove'
 
  - You can also customize operators.
-    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L4)
+    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L26)
 
 
 
