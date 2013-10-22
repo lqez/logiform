@@ -10,11 +10,12 @@
             'hideOriginal': true,
 
             'data': '{"$and":[]}',
+
             'width': {
-                'logicalOperator': 80,
-                'field': 200,
-                'comparisonOperator': 100,
-                'value': 100
+                'logicalOperator': "80px",
+                'field': "200px",
+                'comparisonOperator': "100px",
+                'value': "200px"
             },
             'text': {
                 'add-condition': '+ Condition',
@@ -73,7 +74,7 @@
                 }
             }
             var logicalOperatorContent = 
-                '<select class="lf-logicaloperator selectpicker" data-width="'+logiform.settings.width.logicalOperator+'px">' +
+                '<select class="lf-logicaloperator selectpicker" data-width="'+logiform.settings.width.logicalOperator+'">' +
                 logicalOperatorItems +
                 '</select>';
 
@@ -89,7 +90,7 @@
                 }
             }
             var comparisonOperatorContent = 
-                '<select class="lf-comparisonoperator selectpicker" data-width="'+logiform.settings.width.comparisonOperator+'px">' +
+                '<select class="lf-comparisonoperator selectpicker" data-width="'+logiform.settings.width.comparisonOperator+'">' +
                 comparisonOperatorItems +
                 '</select>';
 
@@ -115,9 +116,15 @@
                                 candidates += '<option value="'+option+'">'+option+'</option>';
                             }
                         }
-                        fieldValueMockup[item['id']] = '<select class="lf-value selectpicker">'+candidates+'</select>';
+                        fieldValueMockup[item['id']] = 
+                            '<select class="lf-value selectpicker" data-width="' +
+                            logiform.settings.width.value+'">' +
+                            candidates +
+                            '</select>';
                     } else {
-                        fieldValueMockup[item['id']] = '<input class="lf-value form-control" type="text">';
+                        fieldValueMockup[item['id']] = 
+                            '<input class="lf-value form-control" type="text" style="width:' +
+                            logiform.settings.width.value+'">';
                     }
 
                     if (firstFieldValueMockup == '') {
@@ -126,7 +133,7 @@
                 }
             }
             var fieldContent = 
-                '<select class="lf-field selectpicker" data-width="'+logiform.settings.width.field+'px">' +
+                '<select class="lf-field selectpicker" data-width="'+logiform.settings.width.field+'">' +
                 fieldItems +
                 '</select>';
 
@@ -291,20 +298,22 @@
         }
 
         logiform.update = function(node) {
+            // Do we have an external update hook?
             if (logiform.settings.onUpdate) {
                 logiform.settings.onUpdate();
             }
 
+            // Do we need live update? Then bake into string per every update.
             if (logiform.settings.liveUpdate) {
                 logiform.bake();
             }
         }
 
         logiform.bake = function(node) {
+            // Use root node as default
             if (!node)
                 node = root;
 
-            console.log(logiform.settings.prettify);
             // Traversing condition tree
             if (logiform.settings.prettify) {
                 $element.val(JSON.stringify(logiform._traverse_bake(node), null, 2));
@@ -342,7 +351,6 @@
             if (undefined == $(this).data('logiform')) {
                 var logiform = new $.logiform(this, options);
                 $(this).data('logiform', logiform);
-                console.log(logiform);
             }
         });
     }

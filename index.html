@@ -103,14 +103,28 @@
             <textarea name="filter" id="logiform-source" class="logiform" rows="26"></textarea>
         </div>
     </div>
-    <hr>
     <div class="row">
         <div class="col-md-12">
             <h2>How to use</h2>
+            <p>Download <a href="https://github.com/lqez/logiform/">logiform</a> and add below codes into the &lt;head&gt; section of your HTML page.</p>
+            <pre><code>&lt;script src="logiform.js"&gt;&lt;/script&gt; 
+&lt;link rel="stylesheet" href="logiform.css"&gt;</code></pre>
+            <p>And activate it!</p>
+            <pre><code>$("#foobar").logiform();</code></pre>
+            <p>There are enoumous options for customizing logiform, check them out <a href="https://github.com/lqez/logiform#options">here</a>.</p>
         </div>
     </div>
-    <p>Logiform by <a href="https://twitter.com/lqez/">Park Hyunwoo</a>, distributed under MIT license</p>
-</div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>License</h2>
+            <p>Logiform is distributed under MIT License.</p>
+        </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="pull-right">Logiform by <a href="https://twitter.com/lqez/">Park Hyunwoo</a>, 2013</p>
+        </div>
+    </div>
 <script>
 $(document).ready(function() {
     // Initialize logiform 
@@ -167,14 +181,18 @@ $(document).ready(function() {
 
     // Initialize buttons
     $('#btn-bake').click( function() {
+        logiform.data("logiform").bake();
     });
     $('#btn-liveupdate').click( function() {
+        logiform.data("logiform").settings.liveUpdate = this.checked;
+        if (this.checked) logiform.data("logiform").bake();
     });
     $('#btn-parse').click( function() {
+        logiform.data("logiform").parse($("#logiform-source").val());
+        logiform.data("logiform").update();
     });
     $('#btn-prettify').click( function() {
-        logiform.data("logiform").settings.liveUpdate = this.checked;
-        console.log(logiform.data("logiform").settings.liveUpdate);
+        logiform.data("logiform").settings.prettify = this.checked;
         logiform.data("logiform").bake();
     });
 });
