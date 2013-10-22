@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Logiform test page</title>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> 
 <script src="logiform.js"></script> 
 <link rel="stylesheet" href="logiform.css">
@@ -8,11 +9,12 @@
 </style>
 </head>
 <body>
-<h1>Logiform</h1>
+<h1>Logiform test page (naked)</h1>
 <textarea name="filter" id="filter" class="logiform" rows="8" cols="80"></textarea>
 <script>
 $(".logiform").logiform({
-    'hide_original': false,
+    'hideOriginal': false,
+    'liveUpdate': true,
     'schema': [
         {
             'id': 'devicetype', 

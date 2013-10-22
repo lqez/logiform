@@ -2,8 +2,27 @@
 
     $.logiform = function(element, options) {
         var defaults = {
-            'hide_original': true,
+            'target': null,
+            'onUpdate': null,
+
+            'prettify': false,
+            'liveUpdate': false,
+            'hideOriginal': true,
+
             'data': '{"$and":[]}',
+
+            'width': {
+                'logicalOperator': "80px",
+                'field': "200px",
+                'comparisonOperator': "100px",
+                'value': "200px"
+            },
+            'text': {
+                'add-condition': '+ Condition',
+                'add-condition-group': '+ Group',
+                'remove-condition': '-',
+                'remove-condition-group': 'Remove'
+            },
             'operators': {
                 'logical': [
                     {'expression': '$and', 'description': 'AND'},
@@ -27,6 +46,7 @@
         };
 
         var logiform = this;
+        var root;
         logiform.settings = {}
 
         var condition_group_mockup;
@@ -54,7 +74,7 @@
                 }
             }
             var logicalOperatorContent = 
-                '<select class="lf-logicaloperator selectpicker">' +
+                '<select class="lf-logicaloperator selectpicker" data-width="'+logiform.settings.width.logicalOperator+'">' +
                 logicalOperatorItems +
                 '</select>';
 
@@ -70,7 +90,7 @@
                 }
             }
             var comparisonOperatorContent = 
-                '<select class="lf-comparisonoperator selectpicker">' +
+                '<select class="lf-comparisonoperator selectpicker" data-width="'+logiform.settings.width.comparisonOperator+'">' +
                 comparisonOperatorItems +
                 '</select>';
 
@@ -96,9 +116,15 @@
                                 candidates += '<option value="'+option+'">'+option+'</option>';
                             }
                         }
-                        fieldValueMockup[item['id']] = '<select class="lf-value">'+candidates+'</select>';
+                        fieldValueMockup[item['id']] = 
+                            '<select class="lf-value selectpicker" data-width="' +
+                            logiform.settings.width.value+'">' +
+                            candidates +
+                            '</select>';
                     } else {
-                        fieldValueMockup[item['id']] = '<input class="lf-value" type="text">';
+                        fieldValueMockup[item['id']] = 
+                            '<input class="lf-value form-control" type="text" style="width:' +
+                            logiform.settings.width.value+'">';
                     }
 
                     if (firstFieldValueMockup == '') {
@@ -107,64 +133,75 @@
                 }
             }
             var fieldContent = 
-                '<select class="lf-field selectpicker">' +
+                '<select class="lf-field selectpicker" data-width="'+logiform.settings.width.field+'">' +
                 fieldItems +
                 '</select>';
 
             // Create a mockup for condition
             condition_mockup = 
                 '<div class="lf-condition">' +
-                    fieldContent +
-                    comparisonOperatorContent + 
+                    '<div class="btn-group">' +
+                        '<button type="button" class="btn btn-warning lf-button-remove-condition">' +
+                        logiform.settings.text['remove-condition'] +
+                        '</button>' +
+                        fieldContent +
+                        comparisonOperatorContent + 
+                    '</div>' +
                     '<div class="lf-condition-value">' +
                     firstFieldValueMockup +
                     '</div>' +
-                    '<button type="button" class="lf-button-remove-condition">Remove</button>' +
                 '</div>';
 
             // Create a mockup for condition group
             condition_group_mockup = 
                 '<div class="lf-condition-group">' +
                     logicalOperatorContent +
-                    '<button type="button" class="lf-button-remove-condition-group">Remove</button>' +
+                    '<button type="button" class="btn btn-danger pull-right lf-button-remove-condition-group">' +
+                    logiform.settings.text['remove-condition-group'] +
+                    '</button>' +
                     '<div class="lf-condition-list">' +
                     '</div>' +
-                    '<div class="lf-buttons">' +
-                        '<button type="button" class="lf-button-add-condition">Add condition</button>' +
-                        '<button type="button" class="lf-button-add-condition-group">Add condition group</button>' +
+                    '<div class="lf-buttons btn-group">' +
+                        '<button type="button" class="btn btn-primary lf-button-add-condition">' +
+                        logiform.settings.text['add-condition'] +
+                        '</button>' +
+                        '<button type="button" class="btn btn-default lf-button-add-condition-group">' +
+                        logiform.settings.text['add-condition-group'] +
+                        '</button>' +
                     '</div>' +
                 '</div>';
 
             // Create root
-            var root = $(condition_group_mockup).attr('id', 'lf-root');
+            root = $(condition_group_mockup).attr('id', 'lf-root');
             root.find('.lf-button-remove-condition-group').attr('disabled', 'disabled');
 
             // Set up handlers
             root.on('click', '.lf-button-add-condition', function() {
                 $(this).parents('.lf-condition-group:first').find('.lf-condition-list:first').append($(condition_mockup));
-                logiform.bake(root);
+                logiform.update();
             });
             root.on('click', '.lf-button-add-condition-group', function() {
                 $(this).parents('.lf-condition-group:first').find('.lf-condition-list:first').append($(condition_group_mockup));
-                logiform.bake(root);
+                logiform.update();
             });
             root.on('click', '.lf-button-remove-condition', function() {
                 $(this).parents('.lf-condition:first').remove();
-                logiform.bake(root);
+                logiform.update();
             });
             root.on('click', '.lf-button-remove-condition-group', function() {
                 var group = $(this).parents('.lf-condition-group:first');
                 // Do not remove root element
                 if (group.attr('id') == 'lf-root') return;
                 group.remove();
-                logiform.bake(root);
+                logiform.update();
             });
             root.on('change', '.lf-field', function() {
-                $(this).siblings('.lf-condition-value').html(fieldValueMockup[$(this).val()]);
-                logiform.bake(root);
+                var fieldval = $(this).val();
+                $(this).parents('.lf-condition:first').find('.lf-condition-value:first').html(fieldValueMockup[fieldval]);
+                logiform.update();
             });
             root.on('change', '.lf-comparisonoperator, .lf-logicaloperator, .lf-value', function() {
-                logiform.bake(root);
+                logiform.update();
             });
 
             // Parse data if exists
@@ -173,21 +210,24 @@
             }
 
             // Hide source
-            if (logiform.settings.hide_original) {
+            if (logiform.settings.hideOriginal) {
                 $element.hide();
             }
 
-            // Append to parent
-            $element.after(root);
-
+            // Append to document 
+            if (logiform.settings.target) {
+                logiform.settings.target.append(root);
+            } else {
+                $element.after(root);
+            }
         }
         
-        logiform.parse = function(data, root) {
+        logiform.parse = function(data) {
             root.find('.lf-condition-list').empty();
             logiform._traverse_parse(JSON.parse(data), root);
 
             // Bake it!
-            logiform.bake(root);
+            logiform.bake();
         }
 
         logiform._traverse_parse = function(tree, node) {
@@ -257,9 +297,29 @@
 
         }
 
+        logiform.update = function(node) {
+            // Do we have an external update hook?
+            if (logiform.settings.onUpdate) {
+                logiform.settings.onUpdate();
+            }
+
+            // Do we need live update? Then bake into string per every update.
+            if (logiform.settings.liveUpdate) {
+                logiform.bake();
+            }
+        }
+
         logiform.bake = function(node) {
+            // Use root node as default
+            if (!node)
+                node = root;
+
             // Traversing condition tree
-            $element.val(JSON.stringify(logiform._traverse_bake(node)));
+            if (logiform.settings.prettify) {
+                $element.val(JSON.stringify(logiform._traverse_bake(node), null, 2));
+            } else {
+                $element.val(JSON.stringify(logiform._traverse_bake(node)));
+            }
         }
 
         logiform._traverse_bake = function(node) {
