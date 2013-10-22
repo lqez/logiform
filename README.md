@@ -29,8 +29,8 @@ And activate it!
     $("#foobar").logiform();
 
 
-Customizing options
--------------------
+Options
+-------
 
 Customizing logiform via plugin settings, like below.
 
