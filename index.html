@@ -1,60 +1,121 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> 
-<script src="logiform.js"></script> 
-<link rel="stylesheet" href="logiform.css">
-<style>
-</style>
+    <title>Logiform</title>
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> 
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <!-- codemirror -->
+    <script src="lib/codemirror/codemirror.js"></script> 
+    <link rel="stylesheet" href="lib/codemirror/codemirror.css">
+
+    <!-- google fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- logiform -->
+    <script src="logiform.js"></script> 
+    <link rel="stylesheet" href="logiform.css">
+
+    <!-- inline styles -->
+    <style>
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Arvo', serif;
+        font-weight: 700;
+    }
+    h1 {
+        font-size: 36pt;
+    }
+    p {
+        font-family: 'Arvo', serif;
+    }
+    </style>
 </head>
+
 <body>
-<h1>Logiform</h1>
-<p>Logiform creates a MongoDB-like query string from a sequence of complex conditions, vice versa.</p> 
-<p>Still in very early stage of development, and <a href="https://github.com/lqez/logiform">I'm living in GitHub</a></p>
-<textarea name="filter" id="filter" class="logiform" rows="8" cols="80"></textarea>
-<p>by <a href="https://twitter.com/lqez/">Park Hyunwoo</a></p>
+<div class="container">
+    <h1>Logiform</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="lead">
+                Logiform creates a MongoDB-alike query string from a sequence of complex conditions, vice versa.<br>
+                Still in very early stage of development, and <a href="https://github.com/lqez/logiform">I'm living in GitHub</a>.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="logiform-target"></div>
+        </div>
+        <div class="col-md-6">
+            <textarea name="filter" id="filter" class="logiform" rows="8" cols="80"></textarea>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>How to use</h2>
+        </div>
+    </div>
+    <p>Logiform by <a href="https://twitter.com/lqez/">Park Hyunwoo</a>, distributed under MIT license</p>
+</div>
 <script>
-$(".logiform").logiform({
-    'hide_original': false,
-    'data': '{"$or":[{"$and":[{"devicetype":{"$eq":"iPad"}},{"language":{"$eq":"ko"}}]},{"$and":[{"devicetype":{"$eq":"iPhone"}},{"version":{"$gt":"3.0"}}]},{"country":{"$eq":"jp"}}]}',
-    'schema': [
-        {
-            'id': 'devicetype', 
-            'description': 'Device Type',
-            'type': 'array',
-            'candidates': [
-                'iPad',
-                'iPhone'
-            ]
-        },
-        {
-            'id': 'version',
-            'description': 'Application Version',
-            'type': 'string'
-        },
-        {
-            'id': 'language',
-            'description': 'Language',
-            'type': 'array',
-            'candidates': [
-                ['ko', 'Korean'],
-                ['en', 'English'],
-                ['ja', 'Japanese']
-            ]
-        },
-        {
-            'id': 'country',
-            'description': 'Country',
-            'type': 'array',
-            'candidates': [
-                ['kr', 'Korea'],
-                ['us', 'United States'],
-                ['jp', 'Japan']
-            ]
-        }
-    ]
+$(document).ready(function() {
+    $('.logiform').logiform({
+        'hide_original': false,
+        'target': $('#logiform-target'),
+        'pretty': true,
+        'data': '{"$or":[{"$and":[{"devicetype":{"$eq":"iPad"}},{"language":{"$eq":"ko"}}]},{"$and":[{"devicetype":{"$eq":"iPhone"}},{"version":{"$gt":"3.0"}}]},{"country":{"$eq":"jp"}}]}',
+        'schema': [
+            {
+                'id': 'devicetype', 
+                'description': 'Device Type',
+                'type': 'array',
+                'candidates': [
+                    'iPad',
+                    'iPhone'
+                ]
+            },
+            {
+                'id': 'version',
+                'description': 'Application Version',
+                'type': 'string'
+            },
+            {
+                'id': 'language',
+                'description': 'Language',
+                'type': 'array',
+                'candidates': [
+                    ['ko', 'Korean'],
+                    ['en', 'English'],
+                    ['ja', 'Japanese']
+                ]
+            },
+            {
+                'id': 'country',
+                'description': 'Country',
+                'type': 'array',
+                'candidates': [
+                    ['kr', 'Korea'],
+                    ['us', 'United States'],
+                    ['jp', 'Japan']
+                ]
+            }
+        ]
+    });
+    
+    // Initialize Codemirror
+    var editor = CodeMirror.fromTextArea(document.getElementById("filter"), {
+        lineNumbers: true,
+        mode: "javascript",
+        link: true
+    });
 });
-//$('.selectpicker').selectpicker();
 </script>
 </body>
 </html>

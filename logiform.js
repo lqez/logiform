@@ -3,7 +3,15 @@
     $.logiform = function(element, options) {
         var defaults = {
             'hide_original': true,
+            'target': null,
+            'pretty': false,
             'data': '{"$and":[]}',
+            'text': {
+                'add-condition': '+',
+                'add-condition-group': '+ Group',
+                'remove-condition': '-',
+                'remove-condition-group': 'Remove'
+            },
             'operators': {
                 'logical': [
                     {'expression': '$and', 'description': 'AND'},
@@ -54,7 +62,7 @@
                 }
             }
             var logicalOperatorContent = 
-                '<select class="lf-logicaloperator selectpicker">' +
+                '<select class="lf-logicaloperator">' +
                 logicalOperatorItems +
                 '</select>';
 
@@ -70,7 +78,7 @@
                 }
             }
             var comparisonOperatorContent = 
-                '<select class="lf-comparisonoperator selectpicker">' +
+                '<select class="lf-comparisonoperator">' +
                 comparisonOperatorItems +
                 '</select>';
 
@@ -107,7 +115,7 @@
                 }
             }
             var fieldContent = 
-                '<select class="lf-field selectpicker">' +
+                '<select class="lf-field">' +
                 fieldItems +
                 '</select>';
 
@@ -119,19 +127,27 @@
                     '<div class="lf-condition-value">' +
                     firstFieldValueMockup +
                     '</div>' +
-                    '<button type="button" class="lf-button-remove-condition">Remove</button>' +
+                    '<button type="button" class="lf-button-remove-condition">' +
+                    logiform.settings.text['remove-condition'] +
+                    '</button>' +
                 '</div>';
 
             // Create a mockup for condition group
             condition_group_mockup = 
                 '<div class="lf-condition-group">' +
                     logicalOperatorContent +
-                    '<button type="button" class="lf-button-remove-condition-group">Remove</button>' +
+                    '<button type="button" class="lf-button-remove-condition-group">' +
+                    logiform.settings.text['remove-condition-group'] +
+                    '</button>' +
                     '<div class="lf-condition-list">' +
                     '</div>' +
                     '<div class="lf-buttons">' +
-                        '<button type="button" class="lf-button-add-condition">Add condition</button>' +
-                        '<button type="button" class="lf-button-add-condition-group">Add condition group</button>' +
+                        '<button type="button" class="lf-button-add-condition">' +
+                        logiform.settings.text['add-condition'] +
+                        '</button>' +
+                        '<button type="button" class="lf-button-add-condition-group">' +
+                        logiform.settings.text['add-condition-group'] +
+                        '</button>' +
                     '</div>' +
                 '</div>';
 
@@ -177,9 +193,12 @@
                 $element.hide();
             }
 
-            // Append to parent
-            $element.after(root);
-
+            // Append to document 
+            if (logiform.settings.target) {
+                logiform.settings.target.append(root);
+            } else {
+                $element.after(root);
+            }
         }
         
         logiform.parse = function(data, root) {
@@ -259,7 +278,11 @@
 
         logiform.bake = function(node) {
             // Traversing condition tree
-            $element.val(JSON.stringify(logiform._traverse_bake(node)));
+            if (logiform.settings.pretty) {
+                $element.val(JSON.stringify(logiform._traverse_bake(node), null, 2));
+            } else {
+                $element.val(JSON.stringify(logiform._traverse_bake(node)));
+            }
         }
 
         logiform._traverse_bake = function(node) {
