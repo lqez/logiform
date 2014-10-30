@@ -79,12 +79,12 @@
                 '</select>';
 
             // Prepare comparison operators
-            var comparisonOperatorItems = ''
+            var comparisonOperatorItems = '';
             for (var i = 0, sz = logiform.settings.operators.comparison.length; i < sz; i++) {
                 item = logiform.settings.operators.comparison[i];
 
                 if (item.expression == '|') {
-                    comparisonOperatorItems += divider
+                    comparisonOperatorItems += divider;
                 } else {
                     comparisonOperatorItems += '<option value="'+item['expression']+'">'+item['description']+'</option>';
                 }
@@ -101,7 +101,7 @@
                 item = logiform.settings.schema[i];
 
                 if (item.id == '|') {
-                    fieldItems += divider
+                    fieldItems += divider;
                 } else {
                     fieldItems += '<option value="'+item['id']+'">'+item['description']+'</option>';
 
