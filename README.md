@@ -77,14 +77,16 @@ Customizing logiform via plugin settings, like below.
     - `width.value` : '200px'
 
  - `text`
-    - Set title of each item.
+    - Set title of each buttons or operators.
     - `add-condition` : '+ Condition'
     - `add-condition-group` : '+ Group'
     - `remove-condition` : '-'
     - `remove-condition-group` : 'Remove'
+    - `$eq` : 'AND'
+    - `$gt`: '> Greater than'
 
  - You can also customize operators.
-    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L26)
+    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L37)
 
 
 
