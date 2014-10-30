@@ -73,7 +73,7 @@
                     logicalOperatorItems += '<option value="'+item['expression']+'">'+item['description']+'</option>';
                 }
             }
-            var logicalOperatorContent = 
+            var logicalOperatorContent =
                 '<select class="lf-logicaloperator selectpicker" data-width="'+logiform.settings.width.logicalOperator+'">' +
                 logicalOperatorItems +
                 '</select>';
@@ -89,7 +89,7 @@
                     comparisonOperatorItems += '<option value="'+item['expression']+'">'+item['description']+'</option>';
                 }
             }
-            var comparisonOperatorContent = 
+            var comparisonOperatorContent =
                 '<select class="lf-comparisonoperator selectpicker" data-width="'+logiform.settings.width.comparisonOperator+'">' +
                 comparisonOperatorItems +
                 '</select>';
@@ -116,13 +116,13 @@
                                 candidates += '<option value="'+option+'">'+option+'</option>';
                             }
                         }
-                        fieldValueMockup[item['id']] = 
+                        fieldValueMockup[item['id']] =
                             '<select class="lf-value selectpicker" data-width="' +
                             logiform.settings.width.value+'">' +
                             candidates +
                             '</select>';
                     } else {
-                        fieldValueMockup[item['id']] = 
+                        fieldValueMockup[item['id']] =
                             '<input class="lf-value form-control" type="text" style="width:' +
                             logiform.settings.width.value+'">';
                     }
@@ -132,20 +132,20 @@
                     }
                 }
             }
-            var fieldContent = 
+            var fieldContent =
                 '<select class="lf-field selectpicker" data-width="'+logiform.settings.width.field+'">' +
                 fieldItems +
                 '</select>';
 
             // Create a mockup for condition
-            condition_mockup = 
+            condition_mockup =
                 '<div class="lf-condition">' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-warning lf-button-remove-condition">' +
                         logiform.settings.text['remove-condition'] +
                         '</button>' +
                         fieldContent +
-                        comparisonOperatorContent + 
+                        comparisonOperatorContent +
                     '</div>' +
                     '<div class="lf-condition-value">' +
                     firstFieldValueMockup +
@@ -153,7 +153,7 @@
                 '</div>';
 
             // Create a mockup for condition group
-            condition_group_mockup = 
+            condition_group_mockup =
                 '<div class="lf-condition-group">' +
                     logicalOperatorContent +
                     '<button type="button" class="btn btn-danger pull-right lf-button-remove-condition-group">' +
@@ -214,14 +214,14 @@
                 $element.hide();
             }
 
-            // Append to document 
+            // Append to document
             if (logiform.settings.target) {
                 logiform.settings.target.append(root);
             } else {
                 $element.after(root);
             }
         }
-        
+
         logiform.parse = function(data) {
             root.find('.lf-condition-list').empty();
             logiform._traverse_parse(JSON.parse(data), root);
