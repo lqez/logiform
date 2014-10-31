@@ -1,0 +1,27 @@
+{
+  "name": "logiform",
+  "main": "logiform.js",
+  "version": "0.1.0",
+  "homepage": "http://lqez.github.io/logiform",
+  "authors": [
+    "Park Hyunwoo <ez.amiryo@gmail.com>"
+  ],
+  "description": "Logical form generator",
+  "keywords": [
+    "logiform",
+    "logical",
+    "generator",
+    "form",
+  ],
+  "dependencies": {
+    "jquery": ">= 1.9.0",
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
