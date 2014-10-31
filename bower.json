@@ -11,10 +11,10 @@
     "logiform",
     "logical",
     "generator",
-    "form",
+    "form"
   ],
   "dependencies": {
-    "jquery": ">= 1.9.0",
+    "jquery": ">= 1.9.0"
   },
   "license": "MIT",
   "ignore": [
