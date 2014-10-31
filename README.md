@@ -1,7 +1,7 @@
 Logiform
 ========
 
-Logiform creates a MongoDB-alike query string from a sequence of complex conditions, vice versa.
+Logiform creates a MongoDB-like query string from a sequence of complex logical form, vice versa.
 
 
 Demo site
@@ -10,16 +10,17 @@ Demo site
 <http://lqez.github.io/logiform/>
 
 
-Download
---------
+Install
+-------
 
-There is no bower configuration, yet. Please clone me from here.
+    bower install logiform
 
+Or clone logiform source from its [repository](https://github.com/lqez/logiform).
 
 How to use
 ----------
 
-Download logiform and add below codes into the `<head>` section of your HTML page.
+Install logiform and add below codes into the `<head>` section of your HTML page.
 
     <script src="logiform.js"></script> 
     <link rel="stylesheet" href="logiform.css">
