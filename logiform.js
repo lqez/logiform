@@ -10,6 +10,7 @@
             'hideOriginal': true,
 
             'data': '{"$and":[]}',
+            'divider': '|',
 
             'width': {
                 'logicalOperator': "80px",
@@ -64,22 +65,22 @@
         var condition_group;
         var fieldValueMockup = {};
 
-        var $element = $(element),
-             element = element;
+        var $element = $(element);
 
         logiform.init = function() {
             logiform.settings = $.extend(true, {}, defaults, options);
 
             // Prepare content
-            var divider = '<option data-divider="true">----</option>';
+            // TODO: expose templates
+            var divider_option = '<option data-divider="true" disabled>----</option>';
 
             // Prepare logical operators
             var logicalOperatorItems = ''
             for (var i = 0, sz = logiform.settings.operators.logical.length; i < sz; i++) {
                 item = logiform.settings.operators.logical[i];
 
-                if (item == '|') {
-                    logicalOperatorItems += divider;
+                if (item == logiform.settings.divider) {
+                    logicalOperatorItems += divider_option;
                 } else {
                     logicalOperatorItems += '<option value="'+item+'">'+logiform.settings.text[item]+'</option>';
                 }
@@ -94,8 +95,8 @@
             for (var i = 0, sz = logiform.settings.operators.comparison.length; i < sz; i++) {
                 item = logiform.settings.operators.comparison[i];
 
-                if (item == '|') {
-                    comparisonOperatorItems += divider
+                if (item == logiform.settings.divider) {
+                    comparisonOperatorItems += divider_option
                 } else {
                     comparisonOperatorItems += '<option value="'+item+'">'+logiform.settings.text[item]+'</option>';
                 }
@@ -111,8 +112,8 @@
             for (var i = 0, sz = logiform.settings.schema.length; i < sz; i++) {
                 item = logiform.settings.schema[i];
 
-                if (item.id == '|') {
-                    fieldItems += divider;
+                if (item.id == logiform.settings.divider) {
+                    fieldItems += divider_option;
                 } else {
                     fieldItems += '<option value="'+item['id']+'">'+item['description']+'</option>';
 
@@ -123,6 +124,8 @@
                             var option = item['candidates'][idxOption];
                             if (option instanceof Array) {
                                 candidates += '<option value="'+option[0]+'">'+option[1]+'</option>';
+                            } else if (option == logiform.settings.divider) {
+                                candidates += divider_option;
                             } else {
                                 candidates += '<option value="'+option+'">'+option+'</option>';
                             }
