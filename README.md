@@ -86,8 +86,8 @@ Customizing logiform via plugin settings, like below.
     - `$eq` : 'AND'
     - `$gt`: '> Greater than'
 
- - You can also customize operators.
-    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L37)
+ - For more,
+    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L4)
 
 
 
