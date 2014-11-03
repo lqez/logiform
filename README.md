@@ -22,7 +22,7 @@ How to use
 
 Install logiform and add below codes into the `<head>` section of your HTML page.
 
-    <script src="logiform.js"></script> 
+    <script src="logiform.js"></script>
     <link rel="stylesheet" href="logiform.css">
 
 And activate it!
@@ -52,7 +52,7 @@ Customizing logiform via plugin settings, like below.
 
  - `target`
     - Set an target element of logiform. If you leave this null, logiform will be displayed beside the element.
-    - default : `null` 
+    - default : `null`
 
  - `prettify`
     - Bake JSON string with indent and linefeed.
@@ -66,7 +66,7 @@ Customizing logiform via plugin settings, like below.
     - Hide source element. (textarea, input...)
     - default : `true`
 
- - `onUpdate` 
+ - `onUpdate`
     - Logifom will call this callback function after updating conditions.
     - default : `null`
 
@@ -78,14 +78,16 @@ Customizing logiform via plugin settings, like below.
     - `width.value` : '200px'
 
  - `text`
-    - Set title of each item.
+    - Set title of each buttons or operators.
     - `add-condition` : '+ Condition'
     - `add-condition-group` : '+ Group'
     - `remove-condition` : '-'
     - `remove-condition-group` : 'Remove'
+    - `$eq` : 'AND'
+    - `$gt`: '> Greater than'
 
  - You can also customize operators.
-    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L26)
+    - Please refer [default settings](https://github.com/lqez/logiform/blob/master/logiform.js#L37)
 
 
 

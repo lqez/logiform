@@ -21,26 +21,37 @@
                 'add-condition': '+ Condition',
                 'add-condition-group': '+ Group',
                 'remove-condition': '-',
-                'remove-condition-group': 'Remove'
+                'remove-condition-group': 'Remove',
+                '$and': 'AND',
+                '$or': 'OR',
+                '$nor': 'NOR',
+                '$eq': '= Equal',
+                '$ne': '!= Not Equal',
+                '$gt': '> Greater than',
+                '$gte': '>= Greater than or equal',
+                '$lt': '< Less than',
+                '$lte': '<= Less than or equal',
+                '$in': 'Match in array',
+                '$nin': 'Not match in array',
             },
             'operators': {
                 'logical': [
-                    {'expression': '$and', 'description': 'AND'},
-                    {'expression': '$or', 'description': 'OR'},
-                    {'expression': '|'},
-                    {'expression': '$nor', 'description': 'NOR'}
+                    '$and',
+                    '$or',
+                    '|',
+                    '$nor',
                 ],
                 'comparison': [
-                    {'expression': '$eq', 'description': '= Equal'},
-                    {'expression': '$ne', 'description': '!= Not equal'},
-                    {'expression': '|'},
-                    {'expression': '$gt', 'description': '> Greater than'},
-                    {'expression': '$gte', 'description': '>= Greater than or equal'},
-                    {'expression': '$lt', 'description': '< Less than'},
-                    {'expression': '$lte', 'description': '<= Less than or equal'},
-                    {'expression': '|'},
-                    {'expression': '$in', 'description': 'Match in array'},
-                    {'expression': '$nin', 'description': 'No match in array'}
+                    '$eq',
+                    '$ne',
+                    '|',
+                    '$gt',
+                    '$gte',
+                    '$lt',
+                    '$lte',
+                    '|',
+                    '$in',
+                    '$nin',
                 ]
             }
         };
@@ -57,7 +68,7 @@
              element = element;
 
         logiform.init = function() {
-            logiform.settings = $.extend({}, defaults, options);
+            logiform.settings = $.extend(true, {}, defaults, options);
 
             // Prepare content
             var divider = '<option data-divider="true">----</option>';
@@ -67,13 +78,13 @@
             for (var i = 0, sz = logiform.settings.operators.logical.length; i < sz; i++) {
                 item = logiform.settings.operators.logical[i];
 
-                if (item.expression == '|') {
+                if (item == '|') {
                     logicalOperatorItems += divider;
                 } else {
-                    logicalOperatorItems += '<option value="'+item['expression']+'">'+item['description']+'</option>';
+                    logicalOperatorItems += '<option value="'+item+'">'+logiform.settings.text[item]+'</option>';
                 }
             }
-            var logicalOperatorContent = 
+            var logicalOperatorContent =
                 '<select class="lf-logicaloperator selectpicker" data-width="'+logiform.settings.width.logicalOperator+'">' +
                 logicalOperatorItems +
                 '</select>';
@@ -83,13 +94,13 @@
             for (var i = 0, sz = logiform.settings.operators.comparison.length; i < sz; i++) {
                 item = logiform.settings.operators.comparison[i];
 
-                if (item.expression == '|') {
-                    comparisonOperatorItems += divider;
+                if (item == '|') {
+                    comparisonOperatorItems += divider
                 } else {
-                    comparisonOperatorItems += '<option value="'+item['expression']+'">'+item['description']+'</option>';
+                    comparisonOperatorItems += '<option value="'+item+'">'+logiform.settings.text[item]+'</option>';
                 }
             }
-            var comparisonOperatorContent = 
+            var comparisonOperatorContent =
                 '<select class="lf-comparisonoperator selectpicker" data-width="'+logiform.settings.width.comparisonOperator+'">' +
                 comparisonOperatorItems +
                 '</select>';
@@ -116,13 +127,13 @@
                                 candidates += '<option value="'+option+'">'+option+'</option>';
                             }
                         }
-                        fieldValueMockup[item['id']] = 
+                        fieldValueMockup[item['id']] =
                             '<select class="lf-value selectpicker" data-width="' +
                             logiform.settings.width.value+'">' +
                             candidates +
                             '</select>';
                     } else {
-                        fieldValueMockup[item['id']] = 
+                        fieldValueMockup[item['id']] =
                             '<input class="lf-value form-control" type="text" style="width:' +
                             logiform.settings.width.value+'">';
                     }
@@ -132,20 +143,20 @@
                     }
                 }
             }
-            var fieldContent = 
+            var fieldContent =
                 '<select class="lf-field selectpicker" data-width="'+logiform.settings.width.field+'">' +
                 fieldItems +
                 '</select>';
 
             // Create a mockup for condition
-            condition_mockup = 
+            condition_mockup =
                 '<div class="lf-condition">' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-warning lf-button-remove-condition">' +
                         logiform.settings.text['remove-condition'] +
                         '</button>' +
                         fieldContent +
-                        comparisonOperatorContent + 
+                        comparisonOperatorContent +
                     '</div>' +
                     '<div class="lf-condition-value">' +
                     firstFieldValueMockup +
@@ -153,7 +164,7 @@
                 '</div>';
 
             // Create a mockup for condition group
-            condition_group_mockup = 
+            condition_group_mockup =
                 '<div class="lf-condition-group">' +
                     logicalOperatorContent +
                     '<button type="button" class="btn btn-danger pull-right lf-button-remove-condition-group">' +
@@ -214,14 +225,14 @@
                 $element.hide();
             }
 
-            // Append to document 
+            // Append to document
             if (logiform.settings.target) {
                 logiform.settings.target.append(root);
             } else {
                 $element.after(root);
             }
         }
-        
+
         logiform.parse = function(data) {
             root.find('.lf-condition-list').empty();
             logiform._traverse_parse(JSON.parse(data), root);
@@ -237,7 +248,7 @@
                 // Set logical operator
                 for (var l = 0, szl = logiform.settings.operators.logical.length; l < szl; l++) {
                     item = logiform.settings.operators.logical[l];
-                    if (item['expression'] == logicalOperator) {
+                    if (item == logicalOperator) {
                         node.find('.lf-logicaloperator').val(logicalOperator);
                         break;
                     }
@@ -277,7 +288,7 @@
                         for (var l = 0, szl = logiform.settings.operators.logical.length; l < szl; l++) {
                             item = logiform.settings.operators.logical[l];
 
-                            if (item['expression'] == field) {
+                            if (item == field) {
                                 // Create condition group and append to list
                                 var condition_group_node = $(condition_group_mockup);
 
