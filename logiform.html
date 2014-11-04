@@ -31,7 +31,8 @@ $(".logiform").logiform({
         {
             'id': 'version',
             'description': 'Application Version',
-            'type': 'string'
+            'type': 'string',
+            'placeholder': 'application version (e.g. 1.0)'
         },
         {
             'id': '|',
@@ -55,7 +56,12 @@ $(".logiform").logiform({
                 ['us', 'United States'],
                 ['jp', 'Japan']
             ]
-        }
+        },
+        {
+            'id': 'variant',
+            'description': 'Some variant',
+            'type': 'string'
+        },
     ]
 });
 //$('.selectpicker').selectpicker();

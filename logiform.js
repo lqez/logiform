@@ -135,10 +135,12 @@
                             logiform.settings.width.value+'">' +
                             candidates +
                             '</select>';
-                    } else {
+                    } else if (item['type'] == 'string') {
                         fieldValueMockup[item['id']] =
                             '<input class="lf-value form-control" type="text" style="width:' +
-                            logiform.settings.width.value+'">';
+                            logiform.settings.width.value+'"' +
+                            ((item['placeholder'] !== undefined) ? ' placeholder="'+item['placeholder']+'"' : '') +
+                            '>';
                     }
 
                     if (firstFieldValueMockup == '') {
