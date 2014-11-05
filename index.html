@@ -164,7 +164,7 @@ $(document).ready(function() {
         'onUpdate': function() {
             $('.selectpicker').selectpicker('refresh');
         },
-        'data': '{"$or":[{"$and":[{"devicetype":{"$eq":"iPad"}},{"language":{"$eq":"ko"}}]},{"$and":[{"devicetype":{"$eq":"iPhone"}},{"version":{"$gt":"3.0"}}]},{"country":{"$eq":"jp"}}]}',
+        'data': '{"$or":[{"$and":[{"devicetype":{"$eq":"iPad"}},{"languages":{"$in":["ko", "kl"]}}]},{"$and":[{"devicetype":{"$eq":"iPhone"}},{"version":{"$gt":"3.0"}}]},{"country":{"$eq":"jp"}}]}',
         'schema': [
             {
                 'id': 'devicetype', 
@@ -185,7 +185,7 @@ $(document).ready(function() {
                 'id': '|',
             },
             {
-                'id': 'language',
+                'id': 'languages',
                 'description': 'Supported languages',
                 'type': 'array',
                 'multiple': true,
