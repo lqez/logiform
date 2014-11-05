@@ -169,7 +169,7 @@ $(document).ready(function() {
             {
                 'id': 'devicetype', 
                 'description': 'Device Type',
-                'type': 'array',
+                'type': 'string',
                 'candidates': [
                     'iPad',
                     'iPhone'
@@ -178,16 +178,23 @@ $(document).ready(function() {
             {
                 'id': 'version',
                 'description': 'Application Version',
+                'placeholder': 'e.g. 1.0.0',
                 'type': 'string'
             },
             {
+                'id': '|',
+            },
+            {
                 'id': 'language',
-                'description': 'Language',
+                'description': 'Supported languages',
                 'type': 'array',
+                'multiple': true,
                 'candidates': [
                     ['ko', 'Korean'],
                     ['en', 'English'],
-                    ['ja', 'Japanese']
+                    ['ja', 'Japanese'],
+                    '|',
+                    ['kl', 'Klingon']
                 ]
             },
             {
@@ -199,6 +206,11 @@ $(document).ready(function() {
                     ['us', 'United States'],
                     ['jp', 'Japan']
                 ]
+            },
+            {
+                'id': 'quantity',
+                'description': 'Quantity',
+                'type': 'number'
             }
         ]
     });
