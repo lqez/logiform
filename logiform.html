@@ -13,14 +13,14 @@
 <h1>Logiform test page (naked)</h1>
 <textarea name="filter" id="filter" class="logiform" rows="8" cols="80"></textarea>
 <script>
-$(".logiform").logiform({
+var logiform = $(".logiform").logiform({
     'hideOriginal': false,
     'liveUpdate': true,
     'schema': [
         {
             'id': 'devicetype', 
             'description': 'Device Type',
-            'type': 'array',
+            'type': 'string',
             'candidates': [
                 'iPad',
                 'iPhone',
@@ -39,8 +39,9 @@ $(".logiform").logiform({
         },
         {
             'id': 'language',
-            'description': 'Language',
+            'description': 'Support Language',
             'type': 'array',
+            'multiple': true,
             'candidates': [
                 ['ko', 'Korean'],
                 ['en', 'English'],
@@ -50,7 +51,7 @@ $(".logiform").logiform({
         {
             'id': 'country',
             'description': 'Country',
-            'type': 'array',
+            'type': 'string',
             'candidates': [
                 ['kr', 'Korea'],
                 ['us', 'United States'],
@@ -62,6 +63,20 @@ $(".logiform").logiform({
             'description': 'Some variant',
             'type': 'string'
         },
+        {
+            'id': '|',
+        },
+        {
+            'id': 'numberfromcandidates',
+            'description': 'Number from candidates',
+            'type': 'number',
+            'candidates': [1,2,3,4,5]
+        },
+        {
+            'id': 'number',
+            'description': 'Just a Number',
+            'type': 'number'
+        }
     ]
 });
 //$('.selectpicker').selectpicker();

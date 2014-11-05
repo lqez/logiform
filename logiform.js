@@ -32,6 +32,7 @@
                 '$gte': '>= Greater than or equal',
                 '$lt': '< Less than',
                 '$lte': '<= Less than or equal',
+                '$all': 'Match all elements in array',
                 '$in': 'Match in array',
                 '$nin': 'Not match in array',
             },
@@ -51,6 +52,7 @@
                     '$lt',
                     '$lte',
                     '|',
+                    '$all',
                     '$in',
                     '$nin',
                 ]
@@ -118,7 +120,7 @@
                     fieldItems += '<option value="'+item['id']+'">'+item['description']+'</option>';
 
                     // TODO: Create a suitable mockup for each field type
-                    if (item['type'] == 'array') {
+                    if (item['candidates']) {
                         var candidates = '';
                         for (var idxOption = 0, szOption = item['candidates'].length; idxOption < szOption; idxOption++) {
                             var option = item['candidates'][idxOption];
@@ -131,15 +133,19 @@
                             }
                         }
                         fieldValueMockup[item['id']] =
-                            '<select class="lf-value selectpicker" data-width="' +
-                            logiform.settings.width.value+'">' +
+                            '<select class="lf-value selectpicker"' +
+                            ' data-type="' + item['type'] + '"' +
+                            ' data-width="' + logiform.settings.width.value + '"' +
+                            ((item['multiple'] === true) ? ' multiple' : '') +
+                            '>' +
                             candidates +
                             '</select>';
-                    } else if (item['type'] == 'string') {
+                    } else {
                         fieldValueMockup[item['id']] =
-                            '<input class="lf-value form-control" type="text" style="width:' +
-                            logiform.settings.width.value+'"' +
-                            ((item['placeholder'] !== undefined) ? ' placeholder="'+item['placeholder']+'"' : '') +
+                            '<input class="lf-value form-control" type="text"' +
+                            ' data-type="' + item['type'] + '"' +
+                            ' style="width:' + logiform.settings.width.value + '"' +
+                            (item['placeholder'] ? ' placeholder="'+item['placeholder']+'"' : '') +
                             '>';
                     }
 
@@ -281,7 +287,6 @@
                                 for (var comparisonOperator in condition[field]) {
                                     var value = condition[field][comparisonOperator];
                                     condition_node.find('.lf-comparisonoperator').val(comparisonOperator);
-                                    // TODO: Multiple select box
                                     condition_node.find('.lf-value').val(value);
                                 }
                                 // Break here, only one value per a statement.
@@ -348,10 +353,20 @@
                 if (cond.hasClass('lf-condition-group')) {
                     conditions.push(logiform._traverse_bake(cond));
                 } else if (cond.hasClass('lf-condition')) {
-                    var field = cond.find('.lf-field').val();
-                    var comparisonOperator = cond.find('.lf-comparisonoperator').val();
-                    var value = cond.find('.lf-value').val();
-                    var s = '{"'+field+'":{"'+comparisonOperator+'":"'+value+'"}}';
+                    var $field = cond.find('.lf-field');
+                    var $comparisonOperator = cond.find('.lf-comparisonoperator');
+                    var $value = cond.find('.lf-value');
+                    var s;
+
+                    if ($value.attr('multiple') == 'multiple') {
+                        s = '{"' + $field.val() + '":' +
+                            '{"' + $comparisonOperator.val() + '": ["' + ($value.val() || []).join('", "') + '"]}}';
+                    } else {
+                        s = '{"' + $field.val() + '":' +
+                            '{"' + $comparisonOperator.val() + '":' +
+                            ($value.data('type') == 'number' ? ($value.val() || 'null') : '"' + $value.val() + '"') +
+                            '}}';
+                    }
                     conditions.push(JSON.parse(s));
                 }
             });
