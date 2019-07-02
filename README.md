@@ -7,7 +7,7 @@ Logiform creates a MongoDB-like query string from a sequence of complex logical 
 Demo site
 ---------
 
-<http://lqez.github.io/logiform/>
+<https://lqez.github.io/logiform/>
 
 
 Install
